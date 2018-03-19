@@ -63,10 +63,7 @@ namespace ENet.Native
                         {
                             foreach (ENetApi platform in new ENetApi[]
                                 {
-                                    new ENetApiX64(),
-                                    new ENetApiX86(),
-                                    new ENetApiLinux(),
-                                    new ENetApiMacOS()
+                                    new ENetApiAny(),
                                 })
                             {
                                 try

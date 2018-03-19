@@ -50,11 +50,8 @@
     <Compile Include="EventType.cs" />
     <Compile Include="Host.cs" />
     <Compile Include="Library.cs" />
-    <Compile Include="Native\ENetApi.MacOS.cs" />
-    <Compile Include="Native\ENetApi.Linux.cs" />
-    <Compile Include="Native\ENetApi.X86.cs" />
+    <Compile Include="Native\ENetApiAny.cs" />
     <Compile Include="Native\ENetApi.cs" />
-    <Compile Include="Native\ENetApi.X64.cs" />
     <Compile Include="Native\Structs.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Packet.IList.cs" />

@@ -24,9 +24,9 @@ using System.Runtime.InteropServices;
 
 namespace ENet.Native
 {
-    unsafe sealed class ENetApiLinux : ENetApi
+    unsafe sealed class ENetApiAny : ENetApi
     {
-        const string LIB = "libenet.so.1";
+        const string LIB = "ENet";
 
         #region Address Functions
         public override int address_set_host(ref ENetAddress address, byte* hostName)
