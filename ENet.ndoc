@@ -1,0 +1,23 @@
+<project SchemaVersion="1.3">
+    <assemblies>
+        <assembly location=".\bin\ENet.dll" documentation=".\bin\ENet.xml" />
+    </assemblies>
+    <namespaces>
+        <namespace name="ENet">ENet is a UDP-based networking library for transmitting packets reliably and unreliably, sequenced and unsequenced, and with multiple channels per connection.
+
+In a game, for example, you can send chat and status updates reliably and positions unreliably, and in the event of packet loss the two will not interfere nor will there be lag on future position updates. Were you to use TCP, on the other hand, a "lag burst" would occur affecting all data, ending only on reception of the lost packet's retry.</namespace>
+        <namespace name="ENet.Native">Access to the native C API is also available.</namespace>
+    </namespaces>
+    <documenters>
+        <documenter name="MSDN">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="ENet" />
+            <property name="Title" value="ENet Class Library for C#" />
+            <property name="ShowVisualBasic" value="True" />
+            <property name="CopyrightText" value="Copyright 2012-2013 James F. Bellinger" />
+            <property name="CopyrightHref" value="http://www.zer7.com/" />
+            <property name="SdkDocVersionString" value="VS.80" />
+            <property name="CleanIntermediates" value="True" />
+        </documenter>
+    </documenters>
+</project>
