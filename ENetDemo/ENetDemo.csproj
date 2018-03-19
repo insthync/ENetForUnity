@@ -46,9 +46,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ENetCS\ENet.csproj">
+    <ProjectReference Include="..\ENetCS\ENetCS.csproj">
       <Project>{D3AFF7FA-96F6-42B8-B03C-E508DC80EC3A}</Project>
-      <Name>ENet</Name>
+      <Name>ENetCS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
