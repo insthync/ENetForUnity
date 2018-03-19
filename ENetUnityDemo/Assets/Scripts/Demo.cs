@@ -12,7 +12,6 @@ public class Demo : MonoBehaviour {
     private void Start()
     {
         Debug.Log("ENet demo");
-        ENet.Library.Initialize();
 
         server = new Thread(Server);
         server.Start();
@@ -22,7 +21,6 @@ public class Demo : MonoBehaviour {
 
         PacketManipulationDemo();        
 
-        ENet.Library.Deinitialize();
     }
 
     private void OnDestroy()
