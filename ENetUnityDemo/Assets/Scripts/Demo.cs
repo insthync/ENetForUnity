@@ -1,37 +1,41 @@
 ﻿using UnityEngine;
-using System;
 using System.Threading;
 
 public class Demo : MonoBehaviour {
+    Thread server;
+    Thread client;
 
     private void Awake()
     {
-        ENet.Library.Initialize();
     }
 
     private void Start()
     {
-        Thread server = new Thread(Server); server.Start();
+        Debug.Log("ENet demo");
+        ENet.Library.Initialize();
+
+        server = new Thread(Server);
+        server.Start();
         Thread.Sleep(250);
-        Thread client = new Thread(Client); client.Start();
+        client = new Thread(Client);
+        client.Start();
 
-        PacketManipulationDemo();
+        PacketManipulationDemo();        
 
-        server.Join();
-        client.Join();
+        ENet.Library.Deinitialize();
     }
 
     private void OnDestroy()
     {
-        StopAllCoroutines();
-        ENet.Library.Deinitialize();
+        server.Abort();
+        client.Abort();
     }
 
     static void Server()
     {
         using (ENet.Host host = new ENet.Host())
         {
-            Console.WriteLine("Initializing server...");
+            Debug.Log("Initializing server...");
 
             host.InitializeServer(5000, 1);
             ENet.Peer peer = new ENet.Peer();
@@ -51,7 +55,7 @@ public class Demo : MonoBehaviour {
                                 // If you are using ENet 1.3.4 or newer, the following two methods will work:
                                 //peer.SetPingInterval(1000);
                                 //peer.SetTimeouts(8, 5000, 60000);
-                                Console.WriteLine("Connected to client at IP/port {0}.", peer.GetRemoteAddress());
+                                Debug.LogFormat("Connected to client at IP/port {0}.", peer.GetRemoteAddress());
                                 for (int i = 0; i < 200; i++)
                                 {
                                     ENet.Packet packet = new ENet.Packet();
@@ -60,7 +64,7 @@ public class Demo : MonoBehaviour {
                                     packet.SetUserData("Test", i * i);
                                     packet.Freed += p =>
                                     {
-                                        Console.WriteLine("Initial packet freed (channel {0}, square of channel {1})",
+                                        Debug.LogFormat("Initial packet freed (channel {0}, square of channel {1})",
                                             p.GetUserData(),
                                             p.GetUserData("Test"));
                                     };
@@ -70,9 +74,9 @@ public class Demo : MonoBehaviour {
 
                             case ENet.EventType.Receive:
                                 byte[] data = @event.Packet.GetBytes();
-                                ushort value = BitConverter.ToUInt16(data, 0);
-                                if (value % 1000 == 1) { Console.WriteLine("  Server: Ch={0} Recv={1}", @event.ChannelID, value); }
-                                value++; peer.Send(@event.ChannelID, BitConverter.GetBytes(value), ENet.PacketFlags.Reliable);
+                                ushort value = System.BitConverter.ToUInt16(data, 0);
+                                if (value % 1000 == 1) { Debug.LogFormat("  Server: Ch={0} Recv={1}", @event.ChannelID, value); }
+                                value++; peer.Send(@event.ChannelID, System.BitConverter.GetBytes(value), ENet.PacketFlags.Reliable);
                                 @event.Packet.Dispose();
                                 break;
                         }
@@ -87,7 +91,7 @@ public class Demo : MonoBehaviour {
     {
         using (ENet.Host host = new ENet.Host())
         {
-            Console.WriteLine("Initializing client...");
+            Debug.Log("Initializing client...");
             host.Initialize(null, 1);
 
             ENet.Peer peer = host.Connect("127.0.0.1", 5000, 1234, 200);
@@ -102,19 +106,19 @@ public class Demo : MonoBehaviour {
                         switch (@event.Type)
                         {
                             case ENet.EventType.Connect:
-                                Console.WriteLine("Connected to server at IP/port {0}.", peer.GetRemoteAddress());
+                                Debug.LogFormat("Connected to server at IP/port {0}.", peer.GetRemoteAddress());
                                 break;
 
                             case ENet.EventType.Receive:
                                 byte[] data = @event.Packet.GetBytes();
-                                ushort value = BitConverter.ToUInt16(data, 0);
-                                if (value % 1000 == 0) { Console.WriteLine("  Client: Ch={0} Recv={1}", @event.ChannelID, value); }
-                                value++; peer.Send(@event.ChannelID, BitConverter.GetBytes(value), ENet.PacketFlags.Reliable);
+                                ushort value = System.BitConverter.ToUInt16(data, 0);
+                                if (value % 1000 == 0) { Debug.LogFormat("  Client: Ch={0} Recv={1}", @event.ChannelID, value); }
+                                value++; peer.Send(@event.ChannelID, System.BitConverter.GetBytes(value), ENet.PacketFlags.Reliable);
                                 @event.Packet.Dispose();
                                 break;
 
                             default:
-                                Console.WriteLine(@event.Type);
+                                Debug.Log(@event.Type);
                                 break;
                         }
                     }
@@ -126,7 +130,7 @@ public class Demo : MonoBehaviour {
 
     static void PacketManipulationDemo()
     {
-        Console.WriteLine("Packet manipulation test/demo... should print 3 2 1...");
+        Debug.Log("Packet manipulation test/demo... should print 3 2 1...");
         using (ENet.Packet packet = new ENet.Packet())
         {
             packet.Initialize(new byte[0]);
@@ -142,7 +146,7 @@ public class Demo : MonoBehaviour {
             byte[] bytes = packet.GetBytes();
             for (int i = 0; i < bytes.Length; i++)
             {
-                Console.WriteLine(bytes[i]);
+                Debug.Log(bytes[i]);
             }
         }
     }
